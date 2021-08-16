@@ -11,3 +11,20 @@ const anagram = (word1, word2) => {
 };
 
 console.log("anagram -", anagram(word1, word2), ", ", anagram(word3, word4));
+
+//* Method 2
+const anagram2 = (word1, word2) => {
+  let hash = {};
+  for (let letter of word1) {
+    hash[letter] = -~hash[letter];
+  }
+  for (let letter of word2) {
+    if (!hash[letter]) {
+      return false;
+    }
+    hash[letter]--;
+  }
+  return true;
+};
+
+console.log("anagram2 -", anagram2(word1, word2), ", ", anagram(word3, word4));
