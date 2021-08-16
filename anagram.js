@@ -8,6 +8,11 @@ const word1 = "orchestra",
   word6 = "seriously";
 
 //* Method 1
+// Split the strings to prep for sorting
+// Sort the array
+// Turn array into string
+// If equal, must be anagram
+
 const anagram = (word1, word2) => {
   return word1.split("").sort().join("") === word2.split("").sort().join("");
 };
@@ -22,6 +27,13 @@ console.log(
 );
 
 //* Method 2
+// Create a frequency hash table
+// Loop through the first word, and input the frequency in the hash
+// loop through the second word
+// if letter doesn't exist, return false
+// subtract one from frequency
+// return true if loop is completed without triggering return false
+
 const anagram2 = (word1, word2) => {
   let hash = {};
   for (let letter of word1) {
