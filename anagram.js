@@ -3,14 +3,23 @@
 const word1 = "orchestra",
   word2 = "carthorse",
   word3 = "rail safety",
-  word4 = "fairy tales";
+  word4 = "fairy tales",
+  word5 = "not an anagram",
+  word6 = "seriously";
 
 //* Method 1
 const anagram = (word1, word2) => {
   return word1.split("").sort().join("") === word2.split("").sort().join("");
 };
 
-console.log("anagram -", anagram(word1, word2), ", ", anagram(word3, word4));
+console.log(
+  "anagram -",
+  anagram(word1, word2),
+  ",",
+  anagram(word3, word4),
+  ",",
+  anagram(word5, word6)
+);
 
 //* Method 2
 const anagram2 = (word1, word2) => {
@@ -27,4 +36,11 @@ const anagram2 = (word1, word2) => {
   return true;
 };
 
-console.log("anagram2 -", anagram2(word1, word2), ", ", anagram(word3, word4));
+console.log(
+  "anagram2 -",
+  anagram2(word1, word2),
+  ",",
+  anagram(word3, word4),
+  ",",
+  anagram(word5, word6)
+);
