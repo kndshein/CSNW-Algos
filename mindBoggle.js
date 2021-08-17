@@ -1,9 +1,10 @@
 //* Given a 4x4 matrix of letters chosen randomly from A-Z (with replacement), and a list L of english words (you can use any words you’d like). Write a program to output all the words present in the matrix per the rules of Boggle. Your program should be able to accept pre-set 4x4 matrices and word lists in a reasonable (text-based) format of your choosing.
 
-const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const size = 4;
-const wordsList = ["cat", "what", "words", "alarm"];
+const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // An array of alphabets
+const size = 4; // size of the square matrix
+const wordsList = ["cat", "what", "words", "alarm"]; // list of words to check
 
+// helper function to generate the matrix from size and fill them with random alphabets (with replacement)
 const generateMatrix = (matrix, size) => {
   for (let i = 0; i < size; i++) {
     matrix.push([]);
@@ -15,6 +16,7 @@ const generateMatrix = (matrix, size) => {
   }
 };
 
+// helper function to search the word in the matrix
 const searchWord = (matrix, r, c, word, visited = new Set()) => {
   if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix.length - 1) {
     return false;
@@ -84,7 +86,6 @@ const boggle = (size, wordsList, preset) => {
     while (queue.length > 0) {
       const current = queue.shift();
       const found = searchWord(matrix, current[0], current[1], word);
-      console.log(found);
       if (found) {
         results.add(word);
       }
