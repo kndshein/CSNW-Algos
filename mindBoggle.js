@@ -19,7 +19,7 @@ const generateMatrix = (size) => {
 };
 
 // function to check if an array is included in another array
-// Bless this SO: https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
+// Citation, bless this SO: https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
 const includesArray = (data, arr) => {
   return data.some(
     (e) => Array.isArray(e) && e.every((o, i) => Object.is(arr[i], o))
@@ -28,7 +28,6 @@ const includesArray = (data, arr) => {
 
 // helper function to search the word in the matrix
 const searchWord = (matrix, r, c, word, visited = []) => {
-  console.log(visited);
   if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix.length - 1) {
     // check for out of bounds
     return false;
@@ -43,13 +42,12 @@ const searchWord = (matrix, r, c, word, visited = []) => {
       // check if the letter in the matrix is the same as the first letter of the word
       return false;
     } else {
-      console.log(word);
       if (word.length === 1) {
         // if last letter in word, return true because the word has been found
         return true;
       }
 
-      // add coords into set before recursion so visited coords are tracked
+      // add coords into visited before recursion so visited coords are tracked
       visited.push([r, c]);
 
       // remove the first letter of the word put into the recursion
@@ -90,7 +88,6 @@ const boggle = (size, wordsList, preset) => {
   } else {
     matrix = generateMatrix(size);
   }
-  console.log(matrix);
 
   wordsList = wordsList.filter((e) => e.length > 2);
 
@@ -135,3 +132,4 @@ console.log(
 //! Search History
 // https://www.boggle.online/
 // https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
