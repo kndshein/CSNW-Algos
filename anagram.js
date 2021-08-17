@@ -1,4 +1,4 @@
-// TODO: Euro coins are denominated as follows: 1, 2, 5, 10, 20 and 50 cent, €1 and €2. Given this, how many different ways can change be made for a €5 note? Write a program to answer this question.
+// TODO: An anagram is a word or phrase formed by rearranging the letters of a different word or phrase irrespective of spaces. For example, "orchestra" and "carthorse." Another example is "rail safety" and  "fairy tales." Given two words or phrases, determine if they're anagrams of each other.
 // Initial thought process: I have done this algorithm before. I can either sort the strings and check if they're equal or create a hash table for it. Ez pz.
 
 const word1 = "orchestra",
