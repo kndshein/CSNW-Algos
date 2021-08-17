@@ -15,9 +15,51 @@ const generateMatrix = (matrix, size) => {
   }
 };
 
+const searchWord = (matrix, r, c, word, visited = new Set()) => {
+  if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix.length - 1) {
+    return false;
+  } else if (visited.has([r, c])) {
+    return false;
+  } else {
+    const matrixLetter = matrix[r][c],
+      firstLetter = word[0].toUpperCase();
+    if (matrixLetter !== firstLetter) {
+      return false;
+    } else {
+      if (word.length === 1) {
+        return true;
+      }
+
+      visited.add([r, c]);
+
+      let newWord = word.slice(1);
+
+      const topLeft = searchWord(matrix, r - 1, c - 1, newWord, visited);
+      const top = searchWord(matrix, r, c - 1, newWord, visited);
+      const topRight = searchWord(matrix, r - 1, c + 1, newWord, visited);
+      const right = searchWord(matrix, r, c + 1, newWord, visited);
+      const bottomRight = searchWord(matrix, r + 1, c + 1, newWord, visited);
+      const bottom = searchWord(matrix, r + 1, c, newWord, visited);
+      const bottomLeft = searchWord(matrix, r + 1, c - 1, newWord, visited);
+      const left = searchWord(matrix, r, c - 1, newWord, visited);
+
+      return (
+        topLeft ||
+        top ||
+        topRight ||
+        right ||
+        bottomRight ||
+        bottom ||
+        bottomLeft ||
+        left
+      );
+    }
+  }
+};
+
 const boggle = (size, wordsList, preset) => {
   let matrix = [],
-    results = [];
+    results = new Set();
 
   // Check if there's preset matrix
   if (preset) {
@@ -31,10 +73,10 @@ const boggle = (size, wordsList, preset) => {
   for (let word of wordsList) {
     let queue = [];
 
-    for (let y = 0; y < matrix.length; y++) {
-      for (let x = 0; x < matrix[0].length; x++) {
-        if (matrix[y][x] === word[0].toUpperCase()) {
-          queue.push([y, x]);
+    for (let r = 0; r < matrix.length; r++) {
+      for (let c = 0; c < matrix[0].length; c++) {
+        if (matrix[r][c] === word[0].toUpperCase()) {
+          queue.push([r, c]);
         }
       }
     }
@@ -42,16 +84,24 @@ const boggle = (size, wordsList, preset) => {
     while (queue.length > 0) {
       const current = queue.shift();
       const found = searchWord(matrix, current[0], current[1], word);
+      console.log(found);
+      if (found) {
+        results.add(word);
+      }
     }
   }
+
+  return [...results];
 };
 
-boggle(4, wordsList, [
-  ["C", "A", "T", "S"],
-  ["H", "L", "A", "M"],
-  ["A", "W", "O", "R"],
-  ["D", "S", "D", "M"],
-]);
+console.log(
+  boggle(4, wordsList, [
+    ["C", "A", "T", "S"],
+    ["H", "L", "A", "M"],
+    ["A", "W", "O", "R"],
+    ["D", "S", "D", "M"],
+  ])
+);
 
 //! Search History
 ("https://www.boggle.online/");
