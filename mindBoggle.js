@@ -4,54 +4,54 @@ const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const size = 4;
 const wordsList = ["cat", "what", "words", "alarm"];
 
-const generateMatrix = (matrix, size, coords) => {
+const generateMatrix = (matrix, size) => {
   for (let i = 0; i < size; i++) {
     matrix.push([]);
     for (let j = 0; j < size; j++) {
       const randomLetter =
         alphabets[Math.floor(Math.random() * alphabets.length)];
       matrix[i].push(randomLetter);
-      if (coords[randomLetter]) {
-        coords[randomLetter].push([i, j]);
-      } else {
-        coords[randomLetter] = [[i, j]];
-      }
-    }
-  }
-};
-
-const getCoords = (matrix, coords) => {
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[i].length; j++) {
-      if (coords[matrix[i][j]]) {
-        coords[matrix[i][j]].push([i, j]);
-      } else {
-        coords[matrix[i][j]] = [[i, j]];
-      }
     }
   }
 };
 
 const boggle = (size, wordsList, preset) => {
   let matrix = [],
-    results = [],
-    coords = {};
+    results = [];
 
   // Check if there's preset matrix
   if (preset) {
     matrix = preset;
-    getCoords(matrix, coords);
   } else {
-    generateMatrix(matrix, size, coords);
+    generateMatrix(matrix, size);
   }
 
   wordsList = wordsList.filter((e) => e.length > 3);
-  console.log(matrix, coords);
+
+  for (let word of wordsList) {
+    let queue = [];
+
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[0].length; x++) {
+        if (matrix[y][x] === word[0].toUpperCase()) {
+          queue.push([y, x]);
+        }
+      }
+    }
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const found = searchWord(matrix, current[0], current[1], word);
+    }
+  }
 };
 
 boggle(4, wordsList, [
-  ["V", "R", "Y", "B"],
-  ["O", "F", "U", "M"],
-  ["A", "K", "P", "T"],
-  ["D", "M", "J", "U"],
+  ["C", "A", "T", "S"],
+  ["H", "L", "A", "M"],
+  ["A", "W", "O", "R"],
+  ["D", "S", "D", "M"],
 ]);
+
+//! Search History
+("https://www.boggle.online/");
