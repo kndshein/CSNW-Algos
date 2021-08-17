@@ -2,7 +2,13 @@
 
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // An array of alphabets
 const size = 4; // size of the square matrix
-const wordsList = ["alarm"]; // list of words to check
+const wordsList = ["cats", "what", "words", "alarm"]; // list of words to check
+const presetMatrix = [
+  ["C", "A", "T", "S"],
+  ["H", "L", "A", "M"],
+  ["A", "W", "O", "R"],
+  ["D", "S", "D", "M"],
+]; // preset matrix -- could be used in boggle search if desired
 
 // helper function to generate the matrix from size and fill them with random alphabets (with replacement)
 const generateMatrix = (size) => {
@@ -89,10 +95,13 @@ const boggle = (size, wordsList, preset) => {
     matrix = generateMatrix(size);
   }
 
+  console.log(matrix);
+
+  // Only use words that are more than 2 letters long
   wordsList = wordsList.filter((e) => e.length > 2);
 
   for (let word of wordsList) {
-    let queue = [];
+    let queue = []; // an array to store first coords
 
     for (let r = 0; r < matrix.length; r++) {
       for (let c = 0; c < matrix[0].length; c++) {
@@ -114,20 +123,7 @@ const boggle = (size, wordsList, preset) => {
   return [...results];
 };
 
-console.log(
-  boggle(4, wordsList, [
-    ["C", "A", "T", "S"],
-    ["H", "L", "A", "M"],
-    ["A", "W", "O", "R"],
-    ["D", "S", "D", "M"],
-  ]),
-  boggle(4, wordsList, [
-    ["V", "O", "V", "O"],
-    ["U", "A", "R", "Q"],
-    ["L", "X", "R", "L"],
-    ["X", "X", "M", "Z"],
-  ])
-);
+console.log(boggle(4, wordsList, presetMatrix), boggle(4, wordsList));
 
 //! Search History
 // https://www.boggle.online/
