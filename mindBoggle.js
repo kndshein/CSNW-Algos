@@ -129,3 +129,6 @@ console.log(boggle(4, wordsList, presetMatrix), boggle(4, wordsList));
 // https://www.boggle.online/
 // https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+
+//! People consulted
+// Friend, cohort colleague, project colleague: Adrian Mendez http://adrianmendez.me/
