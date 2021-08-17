@@ -2,10 +2,11 @@
 
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // An array of alphabets
 const size = 4; // size of the square matrix
-const wordsList = ["cat", "what", "words", "alarm"]; // list of words to check
+const wordsList = ["alarm"]; // list of words to check
 
 // helper function to generate the matrix from size and fill them with random alphabets (with replacement)
-const generateMatrix = (matrix, size) => {
+const generateMatrix = (size) => {
+  let matrix = [];
   for (let i = 0; i < size; i++) {
     matrix.push([]);
     for (let j = 0; j < size; j++) {
@@ -14,28 +15,47 @@ const generateMatrix = (matrix, size) => {
       matrix[i].push(randomLetter);
     }
   }
+  return matrix;
+};
+
+// function to check if an array is included in another array
+// Bless this SO: https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
+const includesArray = (data, arr) => {
+  return data.some(
+    (e) => Array.isArray(e) && e.every((o, i) => Object.is(arr[i], o))
+  );
 };
 
 // helper function to search the word in the matrix
-const searchWord = (matrix, r, c, word, visited = new Set()) => {
+const searchWord = (matrix, r, c, word, visited = []) => {
+  console.log(visited);
   if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix.length - 1) {
+    // check for out of bounds
     return false;
-  } else if (visited.has([r, c])) {
+  } else if (includesArray(visited, [r, c])) {
+    // check if the coords have been visited
     return false;
   } else {
     const matrixLetter = matrix[r][c],
       firstLetter = word[0].toUpperCase();
+
     if (matrixLetter !== firstLetter) {
+      // check if the letter in the matrix is the same as the first letter of the word
       return false;
     } else {
+      console.log(word);
       if (word.length === 1) {
+        // if last letter in word, return true because the word has been found
         return true;
       }
 
-      visited.add([r, c]);
+      // add coords into set before recursion so visited coords are tracked
+      visited.push([r, c]);
 
+      // remove the first letter of the word put into the recursion
       let newWord = word.slice(1);
 
+      // recusion calls for all 8 directions
       const topLeft = searchWord(matrix, r - 1, c - 1, newWord, visited);
       const top = searchWord(matrix, r, c - 1, newWord, visited);
       const topRight = searchWord(matrix, r - 1, c + 1, newWord, visited);
@@ -59,6 +79,7 @@ const searchWord = (matrix, r, c, word, visited = new Set()) => {
   }
 };
 
+// main function
 const boggle = (size, wordsList, preset) => {
   let matrix = [],
     results = new Set();
@@ -67,10 +88,11 @@ const boggle = (size, wordsList, preset) => {
   if (preset) {
     matrix = preset;
   } else {
-    generateMatrix(matrix, size);
+    matrix = generateMatrix(size);
   }
+  console.log(matrix);
 
-  wordsList = wordsList.filter((e) => e.length > 3);
+  wordsList = wordsList.filter((e) => e.length > 2);
 
   for (let word of wordsList) {
     let queue = [];
@@ -101,8 +123,15 @@ console.log(
     ["H", "L", "A", "M"],
     ["A", "W", "O", "R"],
     ["D", "S", "D", "M"],
+  ]),
+  boggle(4, wordsList, [
+    ["V", "O", "V", "O"],
+    ["U", "A", "R", "Q"],
+    ["L", "X", "R", "L"],
+    ["X", "X", "M", "Z"],
   ])
 );
 
 //! Search History
-("https://www.boggle.online/");
+// https://www.boggle.online/
+// https://stackoverflow.com/questions/64303074/check-if-an-array-includes-an-array-in-javascript
