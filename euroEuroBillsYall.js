@@ -1,6 +1,8 @@
 // TODO: Euro coins are denominated as follows: 1, 2, 5, 10, 20 and 50 cent, €1 and €2. Given this, how many different ways can change be made for a €5 note? Write a program to answer this question.
 // Initial thought process: The higher denomination can be made up of lower denomination. For instance, 2 cents can be one 2 cents or two 1 cents; 5 cents can be two 2 cents and one 1 cent, which is just five 1 cent. Seems like a permutation problem.
 
+//! WORK IN PROGRESS!!!
+
 const bills = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2];
 const note = 20;
 
