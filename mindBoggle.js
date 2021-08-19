@@ -3,12 +3,26 @@
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // An array of alphabets
 const size = 4; // size of the square matrix
 const wordsList = ["cats", "what", "words", "alarm"]; // list of words to check
-const presetMatrix = [
+// const presetMatrix = [
+//   ["B", "U", "S", "S", "I", "N", "E", "V", "E", "R"],
+//   ["X", "O", "G", "A", "T", "S", "B", "Y", "D", "G"],
+//   ["H", "J", "D", "B", "E", "A", "R", "H", "O", "E"],
+//   ["W", "I", "Q", "C", "A", "B", "U", "A", "U", "N"],
+//   ["D", "C", "Y", "L", "A", "R", "Y", "N", "G", "J"],
+//   ["W", "N", "K", "A", "U", "N", "G", "Z", "S", "I"],
+//   ["G", "U", "B", "N", "A", "P", "O", "O", "P", "V"]
+
+//   ["C", "A", "T", "S"],
+//   ["H", "L", "A", "M"],
+//   ["A", "W", "O", "R"],
+//   ["D", "S", "D", "M"],
+// ]; // preset matrix -- could be used in boggle search if desired
+
+const presetMatrix2 = [
   ["C", "A", "T", "S"],
   ["H", "L", "A", "M"],
   ["A", "W", "O", "R"],
-  ["D", "S", "D", "M"],
-]; // preset matrix -- could be used in boggle search if desired
+];
 
 // helper function to generate the matrix from size and fill them with random alphabets (with replacement)
 const generateMatrix = (size) => {
@@ -34,7 +48,7 @@ const includesArray = (data, arr) => {
 
 // helper function to search the word in the matrix
 const searchWord = (matrix, r, c, word, visited = []) => {
-  if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix.length - 1) {
+  if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix[0].length - 1) {
     // check for out of bounds
     return false;
   } else if (includesArray(visited, [r, c])) {
@@ -61,7 +75,7 @@ const searchWord = (matrix, r, c, word, visited = []) => {
 
       // recusion calls for all 8 directions
       const topLeft = searchWord(matrix, r - 1, c - 1, newWord, visited);
-      const top = searchWord(matrix, r, c - 1, newWord, visited);
+      const top = searchWord(matrix, r - 1, c, newWord, visited);
       const topRight = searchWord(matrix, r - 1, c + 1, newWord, visited);
       const right = searchWord(matrix, r, c + 1, newWord, visited);
       const bottomRight = searchWord(matrix, r + 1, c + 1, newWord, visited);
@@ -123,7 +137,7 @@ const boggle = (size, wordsList, preset) => {
   return [...results];
 };
 
-console.log(boggle(4, wordsList, presetMatrix), boggle(4, wordsList));
+console.log(boggle(4, wordsList, presetMatrix2), boggle(4, wordsList));
 
 //! Search History
 // https://www.boggle.online/
