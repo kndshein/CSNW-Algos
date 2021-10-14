@@ -178,14 +178,3 @@ console.log("found Words 1", boggle(4, wordsList, presetMatrix));
 
 //! People consulted
 // Friend, cohort colleague, project colleague: Adrian Mendez http://adrianmendez.me/
-
-coords = {
-  a: [
-    [1, 2],
-    [2, 3],
-  ],
-  b: [
-    [5, 6],
-    [1, 3],
-  ],
-};
