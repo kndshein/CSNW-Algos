@@ -2,32 +2,39 @@
 
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); // An array of alphabets
 const size = 4; // size of the square matrix
-const wordsList = ["cats", "what", "words", "alarm"]; // list of words to check
-const wordsList2 = [
-  "hiyaa",
-  "kaung",
-  "doug",
-  "gatsby",
-  "genji",
-  "hanzo",
-  "poop",
-  "never",
-  "bussin",
-];
+const wordsList = ["quote", "what", "words", "alarm", "catsmalh"]; // list of words to check
+// const wordsList2 = [
+//   "hiyaa",
+//   "kaung",
+//   "doug",
+//   "gatsby",
+//   "genji",
+//   "hanzo",
+//   "poop",
+//   "never",
+//   "bussin",
+// ];
 const presetMatrix = [
-  ["C", "A", "T", "S"],
+  ["QU", "O", "T", "E"],
   ["H", "L", "A", "M"],
   ["A", "W", "O", "R"],
 ]; // preset matrix -- could be used in boggle search if desired
-const presetMatrix2 = [
-  ["B", "U", "S", "S", "I", "N", "E", "V", "E", "R"],
-  ["X", "O", "G", "A", "T", "S", "B", "Y", "D", "G"],
-  ["H", "J", "D", "B", "E", "A", "R", "H", "O", "E"],
-  ["W", "I", "Q", "C", "A", "B", "U", "A", "U", "N"],
-  ["D", "C", "Y", "L", "A", "R", "Y", "N", "G", "J"],
-  ["W", "N", "K", "A", "U", "N", "G", "Z", "S", "I"],
-  ["G", "U", "B", "N", "A", "P", "O", "O", "P", "V"],
-];
+// const presetMatrix2 = [
+//   ["B", "U", "S", "S", "I", "N", "E", "V", "E", "R"],
+//   ["X", "O", "G", "A", "T", "S", "B", "Y", "D", "G"],
+//   ["H", "J", "D", "B", "E", "A", "R", "H", "O", "E"],
+//   ["W", "I", "Q", "C", "A", "B", "U", "A", "U", "N"],
+//   ["D", "C", "Y", "L", "A", "R", "Y", "N", "G", "J"],
+//   ["W", "N", "K", "A", "U", "N", "G", "Z", "S", "I"],
+//   ["G", "U", "B", "N", "A", "P", "O", "O", "P", "V"],
+// ];
+const scoreList = {
+  3: 1,
+  4: 1,
+  5: 2,
+  6: 3,
+  7: 5,
+};
 
 // helper function to generate the matrix from size and fill them with random alphabets (with replacement)
 const generateMatrix = (size) => {
@@ -53,6 +60,7 @@ const includesArray = (data, arr) => {
 
 // helper function to search the word in the matrix
 const searchWord = (matrix, r, c, word, visited = []) => {
+  const isQU = word.slice(0, 2).toUpperCase() === "QU" ? true : false;
   if (r < 0 || r > matrix.length - 1 || c < 0 || c > matrix[0].length - 1) {
     // check for out of bounds
     return false;
@@ -61,8 +69,7 @@ const searchWord = (matrix, r, c, word, visited = []) => {
     return false;
   } else {
     const matrixLetter = matrix[r][c],
-      firstLetter = word[0].toUpperCase();
-
+      firstLetter = isQU ? "QU" : word[0].toUpperCase();
     if (matrixLetter !== firstLetter) {
       // check if the letter in the matrix is the same as the first letter of the word
       return false;
@@ -76,7 +83,7 @@ const searchWord = (matrix, r, c, word, visited = []) => {
       visited.push([r, c]);
 
       // remove the first letter of the word put into the recursion
-      let newWord = word.slice(1);
+      let newWord = isQU ? word.slice(2) : word.slice(1);
 
       // recusion calls for all 8 directions
       const topLeft = searchWord(matrix, r - 1, c - 1, newWord, visited);
@@ -105,7 +112,8 @@ const searchWord = (matrix, r, c, word, visited = []) => {
 // main function
 const boggle = (size, wordsList, preset) => {
   let matrix = [],
-    results = new Set();
+    results = new Set(),
+    sum = 0;
 
   // Check if there's preset matrix
   if (preset) {
@@ -114,7 +122,7 @@ const boggle = (size, wordsList, preset) => {
     matrix = generateMatrix(size);
   }
 
-  console.log(matrix);
+  console.log("board", matrix);
 
   // Only use words that are more than 2 letters long
   wordsList = wordsList.filter((e) => e.length > 2);
@@ -124,7 +132,10 @@ const boggle = (size, wordsList, preset) => {
 
     for (let r = 0; r < matrix.length; r++) {
       for (let c = 0; c < matrix[0].length; c++) {
-        if (matrix[r][c] === word[0].toUpperCase()) {
+        if (
+          matrix[r][c] === word.slice(0, 2).toUpperCase() ||
+          matrix[r][c] === word[0].toUpperCase()
+        ) {
           queue.push([r, c]);
         }
       }
@@ -139,10 +150,26 @@ const boggle = (size, wordsList, preset) => {
     }
   }
 
-  return [...results];
+  for (let word of [...results]) {
+    if (scoreList[word.length]) {
+      sum += scoreList[word.length];
+    } else {
+      if (word.length >= 8) {
+        sum += 11;
+      } else {
+        console.log("uh oh");
+      }
+    }
+  }
+
+  return {
+    results: [...results],
+    wordListLength: [...results].length,
+    totalPoints: sum,
+  };
 };
 
-console.log(boggle(4, wordsList, presetMatrix), boggle(20, wordsList));
+console.log("found Words 1", boggle(4, wordsList, presetMatrix));
 
 //! Search History
 // https://www.boggle.online/
@@ -151,3 +178,14 @@ console.log(boggle(4, wordsList, presetMatrix), boggle(20, wordsList));
 
 //! People consulted
 // Friend, cohort colleague, project colleague: Adrian Mendez http://adrianmendez.me/
+
+coords = {
+  a: [
+    [1, 2],
+    [2, 3],
+  ],
+  b: [
+    [5, 6],
+    [1, 3],
+  ],
+};
